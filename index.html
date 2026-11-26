@@ -1,13 +1,70 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ro">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>W-LITTERA – An International Literary Review</title>
+    <title>W-LITTERA | An International Literary Review</title>
+    <!-- Fonturi Google similare cu cele din imagine -->
+    <link rel="preconnect" href="https://googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://googleapis.com/css2?family=Cinzel:wght@400;600&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>W-LITTERA</h1>
-    <p>An International Literary Review</p>
-    <p>Our new literary magazine is coming soon.</p>
+
+    <!-- Bara de navigare (Header) -->
+    <header class="navbar">
+        <div class="logo-container">
+            <!-- Iconiță pană de scris (SVG) -->
+            <svg class="quill-icon" viewBox="0 0 64 64" fill="none" xmlns="http://w3.org">
+                <path d="M56 6C42 8 24 22 14 44L8 58L11 59L17 46C22 46 31 44 39 36C48 27 54 15 56 6Z" fill="white"/>
+                <path d="M14 44C23 32 36 20 53 9" stroke="#183856" stroke-width="1.5" stroke-linecap="round"/>
+                <path d="M26 35L32 34M33 27L40 26" stroke="#183856" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            <span class="logo-text">W-LITTERA</span>
+        </div>
+
+        <div class="header-divider"></div>
+
+        <nav class="nav-links">
+            <a href="#" class="active">Home</a>
+            <a href="#">About</a>
+            <a href="#">Current Issue</a>
+            <a href="#">Archive</a>
+            <a href="#">Authors</a>
+            <a href="#">Submit</a>
+            <a href="#" class="authors-login">Authors Login</a>
+        </nav>
+    </header>
+
+    <!-- Secțiunea principală (Hero cu răsărit) -->
+    <main class="hero-section">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1 class="main-title">An International Literary Review</h1>
+            <div class="subtitle-wrapper">
+                <span class="line"></span>
+                <p class="subtitle">Poetry &bull; Prose &bull; Literature Without Borders</p>
+                <span class="line"></span>
+            </div>
+        </div>
+    </main>
+
+    <!-- Bara de jos (Footer / News ticker) -->
+    <footer class="bottom-bar">
+        <div class="news-item">
+            <span class="news-label">News:</span>
+            Welcome to W-LITTERA. We invite authors from around the world to share their poetry and prose.
+        </div>
+        <div class="footer-sep">|</div>
+        <div class="footer-italic">Literature unites us.</div>
+        <div class="footer-sep">|</div>
+        <div class="footer-italic">Designed and developed with the support of ChatGPT (OpenAI).</div>
+        <div class="footer-sep">|</div>
+        <div class="editor-login">
+            <a href="#">Editor Login</a>
+        </div>
+    </footer>
+
 </body>
 </html>
