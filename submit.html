@@ -532,10 +532,16 @@
                 return;
             }
 
-            if (!worksForm.checkValidity()) {
-                worksForm.reportValidity();
-                return;
-            }
+            const requiredFields =
+    submissionDetails.querySelectorAll(
+        "input[required], select[required], textarea[required]"
+    );
+
+for (const field of requiredFields) {
+    if (!field.reportValidity()) {
+        return;
+    }
+}
 
             const biographyWords = countWords(biography.value);
 
