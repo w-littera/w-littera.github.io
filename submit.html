@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Submit Your Work | W-LITTERA</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="submit.css">
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="navbar">
+
+        <div class="logo-container">
+
+            <svg class="quill-icon"
+                 viewBox="0 0 64 64"
+                 fill="none"
+                 xmlns="http://www.w3.org/2000/svg">
+
+                <path d="M56 6C42 8 24 22 14 44L8 58L11 59L17 46C22 46 31 44 39 36C48 27 54 15 56 6Z"
+                      fill="white"/>
+
+                <path d="M14 44C23 32 36 20 53 9"
+                      stroke="#183856"
+                      stroke-width="1.5"
+                      stroke-linecap="round"/>
+
+                <path d="M26 35L32 34M33 27L40 26"
+                      stroke="#183856"
+                      stroke-width="1.5"
+                      stroke-linecap="round"/>
+
+            </svg>
+
+            <span class="logo-text">W-LITTERA</span>
+
+        </div>
+
+        <div class="header-divider"></div>
+
+        <nav class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="#">About</a>
+            <a href="#">Current Issue</a>
+            <a href="#">Archive</a>
+            <a href="#">Authors</a>
+            <a href="submit.html" class="active">Submit</a>
+            <a href="#" class="authors-login">Authors Login</a>
+        </nav>
+
+    </header>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="submit-main">
+
+        <div class="submit-container">
+
+            <div class="submit-heading">
+                <h1>Submit Your Work</h1>
+
+                <p>
+                    W-LITTERA welcomes poetry, prose and essays
+                    from authors around the world.
+                </p>
+            </div>
+
+
+            <!-- PART 1: EMAIL AND NUMBER OF WORKS -->
+            <section class="form-section">
+
+                <h2>1. Submission Details</h2>
+
+                <form id="initialForm">
+
+                    <div class="form-group">
+
+                        <label for="authorEmail">
+                            Email Address <span class="required">*</span>
+                        </label>
+
+                        <input
+                            type="email"
+                            id="authorEmail"
+                            name="email"
+                            placeholder="Enter your email address"
+                            autocomplete="email"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="workCount">
+                            Number of Works <span class="required">*</span>
+                        </label>
+
+                        <select id="workCount" name="workCount" required>
+
+                            <option value="">Select the number of works</option>
+                            <option value="1">1 work</option>
+                            <option value="2">2 works</option>
+                            <option value="3">3 works</option>
+                            <option value="4">4 works</option>
+
+                        </select>
+
+                    </div>
+
+
+                    <button type="button" id="continueButton" class="primary-button">
+                        Continue
+                    </button>
+
+                </form>
+
+            </section>
+
+
+
+            <!-- PARTS 2 AND 3 -->
+            <div id="submissionDetails" hidden>
+
+
+                <!-- PART 2: AUTHOR INFORMATION -->
+                <section class="form-section">
+
+                    <h2>2. Author Information</h2>
+
+                    <p class="section-description">
+                        Please provide your author information.
+                        Existing author information will be retrieved
+                        automatically after the email verification
+                        and database connection are implemented.
+                    </p>
+
+
+                    <div class="form-group">
+
+                        <label for="firstName">
+                            First Name <span class="required">*</span>
+                        </label>
+
+                        <input
+                            type="text"
+                            id="firstName"
+                            name="firstName"
+                            autocomplete="given-name"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="lastName">
+                            Last Name <span class="required">*</span>
+                        </label>
+
+                        <input
+                            type="text"
+                            id="lastName"
+                            name="lastName"
+                            autocomplete="family-name"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="biography">
+                            Author Biography
+                        </label>
+
+                        <p class="field-instruction">
+                            Your biography must not exceed 80 words.
+                        </p>
+
+                        <textarea
+                            id="biography"
+                            name="biography"
+                            rows="5"
+                            placeholder="Write a short author biography..."
+                        ></textarea>
+
+                        <div class="word-counter" id="biographyCounter">
+                            0 / 80 words
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="authorPhoto">
+                            Author Photograph (Optional)
+                        </label>
+
+                        <p class="field-instruction">
+                            If you upload a photograph, it may be displayed
+                            publicly on the W-LITTERA website.
+                        </p>
+
+                        <input
+                            type="file"
+                            id="authorPhoto"
+                            name="authorPhoto"
+                            accept="image/jpeg,image/png,image/webp"
+                        >
+
+                        <label class="consent-label">
+
+                            <input
+                                type="checkbox"
+                                id="photoConsent"
+                                name="photoConsent"
+                            >
+
+                            I agree to the public display of my photograph
+                            on the W-LITTERA website.
+
+                        </label>
+
+                    </div>
+
+                </section>
+
+
+
+                <!-- PART 3: WORKS -->
+                <section class="form-section">
+
+                    <h2>3. Submission of Works</h2>
+
+                    <p class="section-description">
+                        Please complete a separate form for each work.
+                    </p>
+
+                    <div class="important-notice">
+
+                        <strong>Important – Title of the Work</strong>
+
+                        <p>
+                            Please enter the title of your work in the
+                            designated Title field only. Do not repeat
+                            the title at the beginning of the submitted text.
+                        </p>
+
+                    </div>
+
+                    <div id="worksContainer"></div>
+
+                </section>
+
+
+                <div class="submit-actions">
+
+                    <button type="submit"
+                            form="worksForm"
+                            class="primary-button">
+                        Submit Works
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+
+    <!-- FORM USED FOR VALIDATION -->
+    <form id="worksForm" hidden></form>
+
+
+
+    <!-- FOOTER -->
+    <footer class="bottom-bar">
+
+        <div class="news-item">
+
+            <span class="news-label">News:</span>
+
+            Welcome to W-LITTERA. We invite authors from around
+            the world to share their poetry and prose.
+
+        </div>
+
+        <div class="footer-sep">|</div>
+
+        <div class="footer-italic">
+            Literature unites us.
+        </div>
+
+        <div class="footer-sep">|</div>
+
+        <div class="footer-italic">
+            Designed and developed with the support of ChatGPT (OpenAI).
+        </div>
+
+        <div class="footer-sep">|</div>
+
+        <div class="editor-login">
+            <a href="#">Editor Login</a>
+        </div>
+
+    </footer>
+
+
+
+    <!-- TEMPORARY FRONTEND INTERACTION -->
+    <script>
+
+        const initialForm = document.getElementById("initialForm");
+        const continueButton = document.getElementById("continueButton");
+
+        const submissionDetails =
+            document.getElementById("submissionDetails");
+
+        const worksContainer =
+            document.getElementById("worksContainer");
+
+        const worksForm =
+            document.getElementById("worksForm");
+
+
+        // Count words, ignoring repeated spaces and line breaks.
+        function countWords(text) {
+
+            const trimmed = text.trim();
+
+            if (!trimmed) {
+                return 0;
+            }
+
+            return trimmed.split(/\s+/u).length;
+        }
+
+
+        // Create one work form for each selected work.
+        function createWorkForms(numberOfWorks) {
+
+            worksContainer.innerHTML = "";
+
+            for (let i = 1; i <= numberOfWorks; i++) {
+
+                const workSection = document.createElement("div");
+
+                workSection.className = "work-card";
+
+                workSection.innerHTML = `
+
+                    <h3>Work ${i}</h3>
+
+                    <div class="form-group">
+
+                        <label for="workType${i}">
+                            Work Type <span class="required">*</span>
+                        </label>
+
+                        <select id="workType${i}" required>
+
+                            <option value="">Select work type</option>
+                            <option value="poetry">Poetry</option>
+                            <option value="prose">Prose</option>
+                            <option value="essay">Essay</option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="workTitle${i}">
+                            Title <span class="required">*</span>
+                        </label>
+
+                        <input
+                            type="text"
+                            id="workTitle${i}"
+                            required
+                            placeholder="Enter the title of your work"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="workText${i}">
+                            Full Text <span class="required">*</span>
+                        </label>
+
+                        <p class="field-instruction">
+                            Each work must not exceed 1,000 words.
+                        </p>
+
+                        <textarea
+                            id="workText${i}"
+                            rows="10"
+                            required
+                            placeholder="Enter the full text of your work..."
+                        ></textarea>
+
+                        <div class="word-counter"
+                             id="workCounter${i}">
+                            0 / 1,000 words
+                        </div>
+
+                    </div>
+
+                `;
+
+                worksContainer.appendChild(workSection);
+
+
+                const textArea =
+                    document.getElementById(`workText${i}`);
+
+                const counter =
+                    document.getElementById(`workCounter${i}`);
+
+
+                textArea.addEventListener("input", function () {
+
+                    const words = countWords(this.value);
+
+                    counter.textContent =
+                        `${words.toLocaleString()} / 1,000 words`;
+
+                    counter.classList.toggle(
+                        "limit-exceeded",
+                        words > 1000
+                    );
+
+                });
+
+            }
+
+        }
+
+
+        // Display author information and the selected work forms.
+        continueButton.addEventListener("click", function () {
+
+            if (!initialForm.reportValidity()) {
+                return;
+            }
+
+            const numberOfWorks =
+                Number(document.getElementById("workCount").value);
+
+            createWorkForms(numberOfWorks);
+
+            submissionDetails.hidden = false;
+
+            submissionDetails.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+
+        });
+
+
+        // Biography word counter.
+        const biography =
+            document.getElementById("biography");
+
+        const biographyCounter =
+            document.getElementById("biographyCounter");
+
+
+        biography.addEventListener("input", function () {
+
+            const words = countWords(this.value);
+
+            biographyCounter.textContent =
+                `${words} / 80 words`;
+
+            biographyCounter.classList.toggle(
+                "limit-exceeded",
+                words > 80
+            );
+
+        });
+
+
+        // Require consent only if a photograph is selected.
+        const authorPhoto =
+            document.getElementById("authorPhoto");
+
+        const photoConsent =
+            document.getElementById("photoConsent");
+
+
+        authorPhoto.addEventListener("change", function () {
+
+            photoConsent.required = this.files.length > 0;
+
+            if (this.files.length === 0) {
+                photoConsent.checked = false;
+            }
+
+        });
+
+
+        // Temporary validation only.
+        // The actual Worker connection will be added later.
+        worksForm.addEventListener("submit", function (event) {
+
+            event.preventDefault();
+
+            if (!initialForm.reportValidity()) {
+                return;
+            }
+
+            if (!worksForm.checkValidity()) {
+                worksForm.reportValidity();
+                return;
+            }
+
+            const biographyWords = countWords(biography.value);
+
+            if (biographyWords > 80) {
+
+                alert("The author biography cannot exceed 80 words.");
+
+                biography.focus();
+
+                return;
+            }
+
+
+            const workCount =
+                Number(document.getElementById("workCount").value);
+
+            for (let i = 1; i <= workCount; i++) {
+
+                const text =
+                    document.getElementById(`workText${i}`).value;
+
+                if (countWords(text) > 1000) {
+
+                    alert(`Work ${i} exceeds the 1,000-word limit.`);
+
+                    document.getElementById(`workText${i}`).focus();
+
+                    return;
+                }
+
+            }
+
+
+            alert(
+                "The form has passed the local validation tests. " +
+                "Actual submission will be enabled after the Worker " +
+                "and email confirmation system are connected."
+            );
+
+        });
+
+    </script>
+
+</body>
+</html>
