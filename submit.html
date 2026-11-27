@@ -226,7 +226,7 @@
                             name="authorPhoto"
                             accept="image/jpeg,image/png,image/webp"
                         >
-
+                        <div id="authorPhotoPreview"></div>
                         <label class="consent-label">
 
                             <input
@@ -463,26 +463,121 @@
 
 
         // Display author information and the selected work forms.
-        continueButton.addEventListener("click", function () {
+       // Display author information after looking up the email.
+continueButton.addEventListener("click", async function () {
 
-            if (!initialForm.reportValidity()) {
-                return;
+    if (!initialForm.reportValidity()) {
+        return;
+    }
+
+    const email = document.getElementById("authorEmail").value.trim();
+
+    const numberOfWorks =
+        Number(document.getElementById("workCount").value);
+
+    continueButton.disabled = true;
+    continueButton.textContent = "Please wait...";
+
+    try {
+
+        const response = await fetch(
+            "https://w-littera-api.novaelitterature.workers.dev/author-lookup",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ email: email })
             }
+        );
 
-            const numberOfWorks =
-                Number(document.getElementById("workCount").value);
+        const data = await response.json();
 
-            createWorkForms(numberOfWorks);
+        if (!response.ok || !data.success) {
+            throw new Error("Author lookup failed.");
+        }
 
-            submissionDetails.hidden = false;
+        const author = data.author;
 
-            submissionDetails.scrollIntoView({
-                behavior: "smooth",
-                block: "start"
-            });
+        // Fill author information if the email already exists.
+        document.getElementById("firstName").value =
+            author ? author.first_name : "";
 
+        document.getElementById("lastName").value =
+            author ? author.last_name : "";
+
+        biography.value =
+            author ? (author.biography || "") : "";
+
+        // Update biography word counter.
+        const biographyWords = countWords(biography.value);
+
+        biographyCounter.textContent =
+            `${biographyWords} / 80 words`;
+
+        biographyCounter.classList.toggle(
+            "limit-exceeded",
+            biographyWords > 80
+        );
+
+        // Reset the photo preview.
+        const photoPreview =
+            document.getElementById("authorPhotoPreview");
+
+        photoPreview.replaceChildren();
+
+        // Reset the photo upload field.
+        authorPhoto.value = "";
+
+        // Display the existing public photograph, if available.
+        if (author && author.photo_url) {
+
+            const image = document.createElement("img");
+
+            image.src = author.photo_url;
+            image.alt = "Current author photograph";
+            image.style.maxWidth = "180px";
+            image.style.height = "auto";
+
+            const caption = document.createElement("p");
+
+            caption.textContent = "Current author photograph:";
+
+            photoPreview.appendChild(caption);
+            photoPreview.appendChild(image);
+        }
+
+        // Restore the existing photo consent.
+        photoConsent.checked =
+            Boolean(author && author.photo_public_consent === 1);
+
+        photoConsent.required = false;
+
+        // Create the selected work forms.
+        createWorkForms(numberOfWorks);
+
+        submissionDetails.hidden = false;
+
+        submissionDetails.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
         });
 
+    } catch (error) {
+
+        alert(
+            "We could not retrieve the author information. " +
+            "Please try again."
+        );
+
+    } finally {
+
+        continueButton.disabled = false;
+        continueButton.textContent = "Continue";
+
+    }
+
+});
 
         // Biography word counter.
         const biography =
