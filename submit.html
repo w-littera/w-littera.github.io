@@ -348,7 +348,9 @@
 
         const worksForm =
             document.getElementById("worksForm");
-
+       
+        // Store the ID of the author retrieved from the database.
+            let currentAuthorId = null;
 
         // Count words, ignoring repeated spaces and line breaks.
         function countWords(text) {
@@ -503,7 +505,8 @@ continueButton.addEventListener("click", async function () {
         }
 
         const author = data.author;
-
+        currentAuthorId = author ? author.id : null;
+        
         // Fill author information if the email already exists.
         document.getElementById("firstName").value =
             author ? author.first_name : "";
