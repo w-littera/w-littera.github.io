@@ -228,6 +228,14 @@
                         >
                         <div id="authorPhotoPreview"></div>
                         <p id="authorPhotoStatus" class="field-instruction"></p>
+
+                            <button type="button"
+        id="testPhotoUploadButton"
+        class="primary-button">
+    Test Photo Upload
+</button>
+
+                        
                         <label class="consent-label">
 
                             <input
@@ -743,8 +751,79 @@ authorPhoto.addEventListener("change", async function () {
     }
 
 });
+        
 
+        // Temporary author photograph upload test.
+async function testAuthorPhotoUpload() {
 
+    if (!processedAuthorPhoto) {
+        alert("Please select a photograph first.");
+        return;
+    }
+
+    if (!photoConsent.checked) {
+        alert("Please confirm the photograph consent first.");
+        return;
+    }
+
+    authorPhotoStatus.textContent = "Uploading test photograph...";
+
+    try {
+
+        const buffer = await processedAuthorPhoto.arrayBuffer();
+
+        const bytes = new Uint8Array(buffer);
+
+        let binary = "";
+
+        for (let i = 0; i < bytes.length; i++) {
+            binary += String.fromCharCode(bytes[i]);
+        }
+
+        const image = btoa(binary);
+
+        const response = await fetch(
+            "https://w-littera-api.novaelitterature.workers.dev/author-photo-upload",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    image: image
+                })
+            }
+        );
+
+        const result = await response.json();
+
+        console.log("Photo upload test:", result);
+
+        if (!response.ok || !result.success) {
+            throw new Error(result.error || "Photo upload failed.");
+        }
+
+        authorPhotoStatus.textContent =
+            "Test photograph uploaded successfully.";
+
+        alert(
+            "Upload successful!\n\n" +
+            "GitHub path: " + result.path + "\n\n" +
+            "Photo URL: " + result.photo_url
+        );
+
+    } catch (error) {
+
+        authorPhotoStatus.textContent = error.message;
+
+        alert("Photo upload test failed: " + error.message);
+
+    }
+}
+
+        document
+    .getElementById("testPhotoUploadButton")
+    .addEventListener("click", testAuthorPhotoUpload);
 
         // Temporary validation only.
         // The actual Worker connection will be added later.
