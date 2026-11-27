@@ -748,6 +748,41 @@ async function uploadAuthorPhoto() {
     return data.photo_url;
 }
 
+// Save or update the author information in D1.
+async function saveAuthorInformation(photoUrl) {
+
+    const response = await fetch(
+        "https://w-littera-api.novaelitterature.workers.dev/author-save",
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                first_name: document.getElementById("firstName").value.trim(),
+                last_name: document.getElementById("lastName").value.trim(),
+                email: document.getElementById("authorEmail").value.trim(),
+                biography: biography.value.trim(),
+                photo_url: photoUrl,
+                photo_public_consent: photoUrl ? 1 : 0
+            })
+        }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok || !data.success || !data.author) {
+        throw new Error(
+            data.error || "Author information could not be saved."
+        );
+    }
+
+    // Keep the database author ID for the work submission.
+    currentAuthorId = data.author.id;
+
+    return data.author;
+}
+        
 // Process the selected photograph.
 authorPhoto.addEventListener("change", async function () {
 
