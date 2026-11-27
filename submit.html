@@ -704,6 +704,49 @@ async function compressAuthorPhoto(file) {
     }
 }
 
+    // Upload the processed author photograph to GitHub.
+async function uploadAuthorPhoto() {
+
+    if (!processedAuthorPhoto) {
+        return null;
+    }
+
+    const arrayBuffer = await processedAuthorPhoto.arrayBuffer();
+
+    const bytes = new Uint8Array(arrayBuffer);
+
+    let binary = "";
+
+    for (let i = 0; i < bytes.length; i++) {
+        binary += String.fromCharCode(bytes[i]);
+    }
+
+    const base64 = btoa(binary);
+
+    const response = await fetch(
+        "https://w-littera-api.novaelitterature.workers.dev/author-photo-upload",
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                image: base64,
+                filename: processedAuthorPhoto.name
+            })
+        }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok || !data.success || !data.photo_url) {
+        throw new Error(
+            data.error || "Photograph upload failed."
+        );
+    }
+
+    return data.photo_url;
+}
 
 // Process the selected photograph.
 authorPhoto.addEventListener("change", async function () {
