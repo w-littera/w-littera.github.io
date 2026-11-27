@@ -782,6 +782,64 @@ async function saveAuthorInformation(photoUrl) {
 
     return data.author;
 }
+
+// Submit the literary works to the Worker.
+async function submitWorks() {
+
+    if (!currentAuthorId) {
+        throw new Error("Author information is missing.");
+    }
+
+    const numberOfWorks =
+        Number(document.getElementById("workCount").value);
+
+    const works = [];
+
+    for (let i = 1; i <= numberOfWorks; i++) {
+
+        works.push({
+            work_type:
+                document.getElementById(`workType${i}`).value,
+
+            title:
+                document.getElementById(`workTitle${i}`).value.trim(),
+
+            content:
+                document.getElementById(`workText${i}`).value.trim()
+        });
+
+    }
+
+    const response = await fetch(
+        "https://w-littera-api.novaelitterature.workers.dev/submit-works",
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                author_id: currentAuthorId,
+                email: document.getElementById("authorEmail").value.trim(),
+                works: works
+            })
+        }
+    );
+
+    const data = await response.json();
+
+    if (
+        !response.ok ||
+        !data.success ||
+        data.saved_count !== works.length
+    ) {
+        throw new Error(
+            data.error || "The works could not be submitted."
+        );
+    }
+
+    return data;
+}
+
         
 // Process the selected photograph.
 authorPhoto.addEventListener("change", async function () {
