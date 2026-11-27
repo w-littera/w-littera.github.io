@@ -534,8 +534,12 @@ continueButton.addEventListener("click", async function () {
 
         photoPreview.replaceChildren();
 
-        // Reset the photo upload field.
-        authorPhoto.value = "";
+       // Reset the photo upload field and its processing state.
+authorPhoto.value = "";
+processedAuthorPhoto = null;
+uploadedAuthorPhotoUrl = null;
+authorPhotoStatus.textContent = "";
+photoConsent.required = false;
 
         // Display the existing public photograph, if available.
         if (author && author.photo_url) {
@@ -623,6 +627,7 @@ const authorPhotoStatus =
 
 // The processed photograph will be used later for GitHub upload.
 let processedAuthorPhoto = null;
+let uploadedAuthorPhotoUrl = null;
 
 const MAX_PHOTO_SIZE = 3 * 1024 * 1024;
 const MAX_PHOTO_DIMENSION = 800;
@@ -843,7 +848,7 @@ async function submitWorks() {
         
 // Process the selected photograph.
 authorPhoto.addEventListener("change", async function () {
-
+    uploadedAuthorPhotoUrl = null;
     processedAuthorPhoto = null;
     authorPhotoStatus.textContent = "";
 
@@ -953,11 +958,16 @@ worksForm.addEventListener("submit", async function (event) {
     try {
 
         // 1. Upload a new photograph, if selected.
-        let photoUrl = null;
+       let photoUrl = null;
 
-        if (processedAuthorPhoto) {
-            photoUrl = await uploadAuthorPhoto();
-        }
+if (processedAuthorPhoto) {
+
+    if (!uploadedAuthorPhotoUrl) {
+        uploadedAuthorPhotoUrl = await uploadAuthorPhoto();
+    }
+
+    photoUrl = uploadedAuthorPhotoUrl;
+}
 
         // 2. Save or update the author information.
         await saveAuthorInformation(photoUrl);
