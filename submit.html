@@ -891,66 +891,102 @@ authorPhoto.addEventListener("change", async function () {
 
       
 
-        // Temporary validation only.
-        // The actual Worker connection will be added later.
-        worksForm.addEventListener("submit", function (event) {
+        
+// Submit the complete form.
+worksForm.addEventListener("submit", async function (event) {
 
-            event.preventDefault();
+    event.preventDefault();
 
-            if (!initialForm.reportValidity()) {
-                return;
-            }
-
-            const requiredFields =
-    submissionDetails.querySelectorAll(
-        "input[required], select[required], textarea[required]"
-    );
-
-for (const field of requiredFields) {
-    if (!field.reportValidity()) {
+    if (!initialForm.reportValidity()) {
         return;
     }
-}
 
-            const biographyWords = countWords(biography.value);
+    // Validate all required fields.
+    const requiredFields =
+        submissionDetails.querySelectorAll(
+            "input[required], select[required], textarea[required]"
+        );
 
-            if (biographyWords > 80) {
+    for (const field of requiredFields) {
+        if (!field.reportValidity()) {
+            return;
+        }
+    }
 
-                alert("The author biography cannot exceed 80 words.");
+    // Validate the biography.
+    const biographyWords = countWords(biography.value);
 
-                biography.focus();
+    if (biographyWords > 80) {
+        alert("The author biography cannot exceed 80 words.");
+        biography.focus();
+        return;
+    }
 
-                return;
-            }
+    // Validate each work.
+    const numberOfWorks =
+        Number(document.getElementById("workCount").value);
 
+    for (let i = 1; i <= numberOfWorks; i++) {
 
-            const workCount =
-                Number(document.getElementById("workCount").value);
+        const text =
+            document.getElementById(`workText${i}`).value;
 
-            for (let i = 1; i <= workCount; i++) {
+        if (countWords(text) > 1000) {
+            alert(`Work ${i} exceeds the 1,000-word limit.`);
+            document.getElementById(`workText${i}`).focus();
+            return;
+        }
+    }
 
-                const text =
-                    document.getElementById(`workText${i}`).value;
+    // Make sure photograph processing has finished.
+    if (authorPhoto.files.length > 0 && !processedAuthorPhoto) {
+        alert("Please wait until photograph processing is complete.");
+        return;
+    }
 
-                if (countWords(text) > 1000) {
+    const submitButton =
+        document.querySelector('.submit-actions button[type="submit"]');
 
-                    alert(`Work ${i} exceeds the 1,000-word limit.`);
+    submitButton.disabled = true;
+    submitButton.textContent = "Submitting...";
 
-                    document.getElementById(`workText${i}`).focus();
+    try {
 
-                    return;
-                }
+        // 1. Upload a new photograph, if selected.
+        let photoUrl = null;
 
-            }
+        if (processedAuthorPhoto) {
+            photoUrl = await uploadAuthorPhoto();
+        }
 
+        // 2. Save or update the author information.
+        await saveAuthorInformation(photoUrl);
 
-            alert(
-                "The form has passed the local validation tests. " +
-                "Actual submission will be enabled after the Worker " +
-                "and email confirmation system are connected."
-            );
+        // 3. Save all submitted works.
+        const result = await submitWorks();
 
-        });
+        alert(
+            `Your works have been submitted successfully. ` +
+            `${result.saved_count} work(s) received.`
+        );
+
+        submitButton.textContent = "Submitted";
+
+    } catch (error) {
+
+        console.error("Submission error:", error);
+
+        alert(
+            "We could not complete your submission. " +
+            (error.message || "Please try again.")
+        );
+
+        submitButton.disabled = false;
+        submitButton.textContent = "Submit Works";
+
+    }
+
+});
 
     </script>
 
